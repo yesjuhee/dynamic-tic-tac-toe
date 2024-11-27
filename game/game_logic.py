@@ -22,6 +22,7 @@ def check_winner(game_board, current_player):
 
 
 def computer_move(game_board):  # TODO : mini-max 혹은 DP가 들어간 로직으로 수정
+    # 작업
     for i in range(len(game_board)):
         if game_board[i] == "":
             game_board[i] = "O"  # 컴퓨터: O
