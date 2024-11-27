@@ -10,3 +10,5 @@ media
 
 ## venv
 venv_django
+
+.DS_Store

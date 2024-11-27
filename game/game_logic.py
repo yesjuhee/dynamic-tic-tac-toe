@@ -24,6 +24,75 @@ def check_winner(game_board, current_player):
 def computer_move(game_board):
     for i in range(len(game_board)):
         if game_board[i] == "":
-            game_board[i] = "O"  # Computer always plays as "O"
+            game_board[i] = "O"  # 컴퓨터: O
             break
     return game_board
+
+
+'''
+def minimax(game_board, depth, is_maximizing):
+    """
+    Minimax algorithm to calculate the optimal move.
+    :param game_board: Current state of the game board.
+    :param depth: Current depth of the recursion.
+    :param is_maximizing: Boolean indicating whether it's the maximizing player's turn.
+    :return: The best score for the current player.
+    """
+    # Check if the game has reached a terminal state
+    if check_winner(game_board, "O"):
+        return 10 - depth  # Favor faster wins
+    if check_winner(game_board, "X"):
+        return depth - 10  # Favor slower losses
+    if "" not in game_board:  # Draw
+        return 0
+
+    if is_maximizing:
+        best_score = float("-inf")
+        for i in range(len(game_board)):
+            if game_board[i] == "":
+                # Try a move
+                game_board[i] = "O"
+                score = minimax(game_board, depth + 1, False)
+                # Undo the move
+                game_board[i] = ""
+                best_score = max(best_score, score)
+        return best_score
+    else:
+        best_score = float("inf")
+        for i in range(len(game_board)):
+            if game_board[i] == "":
+                # Try a move
+                game_board[i] = "X"
+                score = minimax(game_board, depth + 1, True)
+                # Undo the move
+                game_board[i] = ""
+                best_score = min(best_score, score)
+        return best_score
+
+
+def computer_move(game_board):
+    """
+    Use the Minimax algorithm to determine the computer's best move.
+    :param game_board: Current state of the game board.
+    :return: Updated game board with the computer's move.
+    """
+    best_score = float("-inf")
+    best_move = -1
+
+    for i in range(len(game_board)):
+        if game_board[i] == "":
+            # Try a move
+            game_board[i] = "O"
+            score = minimax(game_board, 0, False)
+            # Undo the move
+            game_board[i] = ""
+            if score > best_score:
+                best_score = score
+                best_move = i
+
+    # Make the best move
+    if best_move != -1:
+        game_board[best_move] = "O"
+
+    return game_board
+'''
