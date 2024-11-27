@@ -21,12 +21,19 @@ def check_winner(game_board, current_player):
     return False
 
 
-def computer_move(game_board):
+def computer_move(game_board):  # TODO : mini-max 혹은 DP가 들어간 로직으로 수정
     for i in range(len(game_board)):
         if game_board[i] == "":
             game_board[i] = "O"  # 컴퓨터: O
             break
     return game_board
+
+'''
+game_board: 문자열 9개 리스트. 현재 게임 상황 표시
+turn: 그 다음 차례 ('O' | 'X')
+'''
+def simulation(game_board, turn): 
+    return simulation_board, comment # gmae_board + 승률 숫자 표시(문자열) / 상황에 대한 분석 코멘트
 
 
 '''
