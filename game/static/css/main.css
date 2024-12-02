@@ -121,7 +121,6 @@ body {
 
 #statusText {
   font-size: 1.2em;
-  margin: 1.2em 0 0.3em 0;
   color: #2d3748;
 }
 
@@ -180,6 +179,10 @@ body {
   margin: 1em auto;
   width: 90%;
 }
+/* 
+#status_container #statusText {
+  margin: 0;
+} */
 
 #undoBtn, 
 #redoBtn {

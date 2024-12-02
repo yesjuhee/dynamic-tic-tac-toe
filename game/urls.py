@@ -18,7 +18,7 @@ urlpatterns = [
     path("play/practice/undo", practice.undo, name="undo"),
     path("play/practice/redo", practice.redo, name="redo"),
     path(
-        "play/practice/<int:cell_index>",
+        "play/practice/<int:cell_index>/",
         practice.user_practice,
         name="user_practice",
     ),

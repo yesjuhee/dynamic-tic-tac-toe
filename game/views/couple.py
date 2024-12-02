@@ -1,6 +1,6 @@
 from django.http import JsonResponse
 from django.shortcuts import render
-from ..game_logic import check_winner, computer_move
+from ..game_logic import check_winner
 from .base import change_player
 
 # 게임 상태를 저장하는 전역 변수
@@ -66,7 +66,7 @@ def user_couple(request, cell_index):
             }
         )
 
-    change_player()
+    current_player = change_player(current_player)
 
     return JsonResponse(
         {

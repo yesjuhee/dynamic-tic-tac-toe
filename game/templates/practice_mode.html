@@ -13,11 +13,10 @@
         <button id="redoBtn">➡️️</button>
     </div>
     
-    <p>분석 결과입니다.</p>
-    {% comment %} <p>{{ analysText }}</p> {% endcomment %}
+    <p id="analyses" >{{ analyses }}</p>
 </div>
 {% endblock extra_content %}
 
-{% comment %} {% block script %}
+{% block script %}
 <script src="{% static 'js/practice_mode.js' %}"></script>
-{% endblock script %} {% endcomment %}
+{% endblock script %}

@@ -75,7 +75,7 @@ def user_solo(request, cell_index):
             }
         )
 
-    change_player()  # 컴퓨터 차례
+    current_player = change_player(current_player)  # 컴퓨터 차례
 
     return JsonResponse(
         {
@@ -120,7 +120,7 @@ def computer(request):
         )
 
     # 유저 차레로 바뀜
-    change_player()
+    current_player = change_player(current_player)
     return JsonResponse(
         {
             "game_board": game_board,
