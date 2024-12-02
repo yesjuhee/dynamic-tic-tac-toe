@@ -23,7 +23,7 @@ def check_winner(game_board, current_player):
 
 def computer_move(
     game_board,
-    computer_sign,  # TODO : 컴퓨터가 어떤 패인지를 추가함! 상황에 맞춰 수정 필요
+    computer_sign,  # TODO : 컴퓨터가 어떤 패인지를 추가함! 상황에 맞춰 수정 필요 ("O"|"X")
 ):  # TODO : mini-max 혹은 DP가 들어간 로직으로 수정
     for i in range(len(game_board)):
         if game_board[i] == "":
