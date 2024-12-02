@@ -1,6 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,9 +8,11 @@
     <link rel="stylesheet" href="{% static '/css/main.css' %}" />
   </head>
   <body>
-    <h1>Dynamic Tic Tac Toe</h1>
-    <button onclick="location.href='{% url 'solo_mode' %}'">1인 모드</button>
-    <button onclick="location.href='{% url 'couple_mode' %}'">2인 모드</button>
-    <button onclick="location.href='{% url 'practice_mode' %}'">연습 모드</button>
+    <div id="main_container">
+      <h1>Dynamic <br> Tic Tac Toe</h1>
+      <button onclick="location.href='{% url 'solo_mode' %}'">1인 모드</button>
+      <button onclick="location.href='{% url 'couple_mode' %}'">2인 모드</button>
+      <button onclick="location.href='{% url 'practice_mode' %}'">연습 모드</button>
+    </div>
   </body>
 </html>

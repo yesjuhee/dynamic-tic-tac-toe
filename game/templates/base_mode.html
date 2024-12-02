@@ -9,10 +9,7 @@
   </head>
   <body>
     <div class="wrapper">
-      <div class="head">
-        {% block title %}{% endblock title %} 
-      </div>
-      <div id="game_container">
+      {% block title %}{% endblock title %} 
         <div id="game_board">
           {% for cell in game_board %}
           <div class="cell" cellIndex="{{ forloop.counter0 }}">{{ cell }}</div>
@@ -23,7 +20,6 @@
         <button id="mainBtn" onclick="location.href='{% url 'index' %}'">🚪</button> 
         {% block extra_content %}{% endblock extra_content %}
       </div>
-    </div>
     {% comment %} <script src="{% static 'js/common.js' %}"></script> {% endcomment %}
     {% block script %}{% endblock script %}
   </body>

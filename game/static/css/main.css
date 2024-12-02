@@ -1,66 +1,176 @@
 /* static/css/main.css */
 
 body {
-  /* width: 100%; */
-  height: 90vh;
+  height: 100vh;
+  margin: 0;
   background: #f1f1f1;
   display: flex;
   justify-content: center;
   align-items: center;
+  font-family: 'Arial', sans-serif;
 }
-#game_container {
+
+/* 메인 화면 */
+#main_container {
   text-align: center;
+  width: 90%;
+  max-width: 400px;
+  padding: 1em;
+  background: white;
+  border-radius: 1em;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
+
+#main_container h1 {
+  font-size: 1.8em;
+  margin: 0.5em 0 1em;
+  color: #2d3748;
+}
+
+#main_container button {
+  display: block;
+  width: 100%;
+  max-width: 300px;
+  padding: 0.8em;
+  margin: 0.5em auto;
+  font-size: 1em;
+  font-weight: bold;
+  border: none;
+  border-radius: 0.5em;
+  background-color: #31d47d;
+  color: white;
+  cursor: pointer;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+#main_container button:hover {
+  transform: translateY(-2px); 
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15); 
+}
+
+#main_container button:active {
+  transform: scale(0.98); 
+  box-shadow: none;
+}
+
+@media (max-width: 480px) {
+  #main_container h1 {
+    font-size: 1.5em;
+  }
+
+  #main_container button {
+    font-size: 0.9em; 
+    padding: 0.7em;
+  }
+}
+
+/* 게임 화면 */
+.wrapper {
+  text-align: center;
+  width: 90%;
+  max-width: 400px;
+  padding: 1em;
+  background: white;
+  border-radius: 1em;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.wrapper h1 {
+  text-align: center;
+  font-size: 2em;
+  margin-bottom: 1em;
+  columns: #2d3748;
+}
+
 #game_board {
   display: grid;
   grid-gap: 0.5em;
   grid-template-columns: repeat(3, 1fr);
-  width: 16em;
-  height: auto;
-  margin: 0.5em 0;
+  justify-content: center;
+  width: 100%;
+  max-width: 14em;
+  margin: 0 auto 1em;
+  padding: 0;
+  box-sizing: border-box;
 }
+
 .cell {
-  background: #2f76c7;
+  background: #31d47d;
   width: 5em;
   height: 5em;
   display: flex;
   justify-content: center;
   align-items: center;
   border-radius: 0.5em;
-  font-weight: 500;
+  font-size: 1.5em; 
+  font-weight: bold;
   color: white;
-  box-shadow: 0.025em 0.125em 0.25em rgba(0, 0, 0, 0.25);
   cursor: pointer;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  transition: background 0.2s transform 0.1s;
+  margin: 0;
 }
-.head {
-  width: 16em;
-  text-align: center;
+.cell:hover {
+  background: #28b76b;
+  transform: scale(1.05);
 }
-.wrapper h1,
-h3 {
-  color: #0a2c1a;
+.cell:active {
+  transform: scale(0.95);
 }
 
-label {
-  font-size: 20px;
-  color: #0a2c1a;
+#statusText {
+  font-size: 1.2em;
+  margin: 0.5em 0;
+  color: #2d3748;
 }
-input,
-select {
-  margin-bottom: 10px;
-  width: 100%;
-  padding: 15px;
-  border: 1px solid #125a33;
-  font-size: 14px;
-  background-color: #71d19e;
-  color: white;
+
+#restartBtn, #mainBtn {
+  display: inline-block;
+  width: 3em;
+  height: 3em;
+  margin: 0.5em;
+  font-size: 1.5em;
+  text-align: center;
+  line-height: 3em;
+  background: #ffcc00;
+  border: none;
+  border-radius: 50%;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
-.button {
-  color: white;
-  white-space: nowrap;
-  background-color: #31d47d;
-  padding: 10px 20px;
-  border: 0;
-  border-radius: 2px;
-  transition: all 150ms ease-out;
+#restartBtn:hover,
+#mainBtn:hover {
+  transform: scale(1.1);
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
+}
+#restartBtn:active,
+#mainBtn:active {
+  transform: scale(0.9);
+}
+
+@media (max-width: 480px) {
+  .wrapper .head {
+    font-size: 1.5em; 
+  }
+
+  #game_board {
+    width: 90%;
+    max-width: none; 
+  }
+
+  .cell {
+    width: 4.5em;
+    height: 4.5em;
+    font-size: 1.3em; 
+  }
+
+  #restartBtn,
+  #mainBtn {
+    width: 2.5em;
+    height: 2.5em;
+    font-size: 1.2em;
+    line-height: 2.5em; 
+  }
 }
