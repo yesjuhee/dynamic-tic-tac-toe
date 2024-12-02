@@ -8,20 +8,9 @@
     <link rel="stylesheet" href="{% static '/css/main.css' %}" />
   </head>
   <body>
-    <div class="wrapper">
-      <div class="head">
-        <h1>DYNAMIC</h1><h1> TIC TAC TOE</h1>
-      </div>
-      <div id="game_container">
-        <div id="game_board">
-          {% for cell in game_board %}
-          <div class="cell" cellIndex="{{ forloop.counter0 }}">{{ cell }}</div>
-          {% endfor %}
-        </div>
-        <h2 id="statusText">{{ status_text }}</h2>
-        <button id="restartBtn">Restart Game</button>
-      </div>
-    </div>
-    <script src="{% static 'js/game.js' %}"></script>
+    <h1>Dynamic Tic Tac Toe</h1>
+    <button onclick="location.href='{% url 'solo_mode' %}'">1인 모드</button>
+    <button onclick="location.href='{% url 'couple_mode' %}'">2인 모드</button>
+    <button onclick="location.href='{% url 'practice_mode' %}'">연습 모드</button>
   </body>
 </html>

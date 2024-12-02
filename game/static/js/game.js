@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const cellIndex = event.target.getAttribute("cellIndex");
 
-    fetch(`/game/user/${cellIndex}/`)
+    fetch(`/game/play/user/${cellIndex}/`)
       .then((response) => response.json())
       .then((data) => {
         updateGame(data);
@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (data.running && data.status_text !== "Invalid move!") {
           isUserTurn = false;
           setTimeout(() => {
-            fetch(`/game/computer`)
+            fetch(`/game/play/computer`)
               .then((response) => response.json())
               .then((data) => {
                 updateGame(data);

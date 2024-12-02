@@ -19,7 +19,24 @@ win_conditions = [
 ]
 
 
+# def index(request):
+#     global game_board, current_player, running
+#     game_board = [""] * 9
+#     current_player = "X"
+#     running = True
+#     status_text = "Your turn"
+#     return render(
+#         request,
+#         "index.html",
+#         {"game_board": game_board, "status_text": status_text, "running": running},
+#     )
+
+
 def index(request):
+    return render(request, "index.html")
+
+
+def solo_mode(request):
     global game_board, current_player, running
     game_board = [""] * 9
     current_player = "X"
@@ -27,8 +44,22 @@ def index(request):
     status_text = "Your turn"
     return render(
         request,
-        "index.html",
+        "solo_mode.html",
         {"game_board": game_board, "status_text": status_text, "running": running},
+    )
+
+
+def couple_mode(request):
+    return render(
+        request,
+        "couple_mode.html",
+    )
+
+
+def practice_mode(request):
+    return render(
+        request,
+        "practice_mode.html",
     )
 
 
