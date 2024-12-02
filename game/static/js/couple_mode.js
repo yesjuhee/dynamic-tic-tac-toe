@@ -3,29 +3,15 @@ document.addEventListener("DOMContentLoaded", () => {
   const statusText = document.querySelector("#statusText");
   const restartBtn = document.querySelector("#restartBtn");
 
-  let isUserTurn = true;
 
   function cellClicked(event) {
-    if (!isUserTurn) return;
-
     const cellIndex = event.target.getAttribute("cellIndex");
 
-    fetch(`/game/play/user/${cellIndex}/`)
+    fetch(`/game/play/user/couple/${cellIndex}/`)
       .then((response) => response.json())
       .then((data) => {
         updateGame(data);
-
-        if (data.running && data.status_text !== "잘못된 위치입니다!") {
-          isUserTurn = false;
-          setTimeout(() => {
-            fetch(`/game/play/computer`)
-              .then((response) => response.json())
-              .then((data) => {
-                updateGame(data);
-                isUserTurn = true;
-              });
-          }, 500);
-        }
+        changeUser();
       });
   }
 

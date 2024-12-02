@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const cellIndex = event.target.getAttribute("cellIndex");
 
-    fetch(`/game/play/user/${cellIndex}/`)
+    fetch(`/game/play/user/solo/${cellIndex}/`)
       .then((response) => response.json())
       .then((data) => {
         updateGame(data);
