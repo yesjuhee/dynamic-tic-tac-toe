@@ -3,19 +3,40 @@ document.addEventListener("DOMContentLoaded", () => {
     const statusText = document.querySelector("#statusText");
     const analyses = document.querySelector("#analyses");
     const restartBtn = document.querySelector("#restartBtn");
+    const undoBtn = document.querySelector("#undoBtn");
+    const redoBtn = document.querySelector("#redoBtn");
   
   
     function cellClicked(event) {
-      const cellIndex = event.target.getAttribute("cellIndex");
+        const cellIndex = event.target.getAttribute("cellIndex");
   
-      fetch(`/game/play/practice/${cellIndex}/`)
+        fetch(`/game/play/practice/${cellIndex}/`)
         .then((response) => response.json())
         .then((data) => {
-          updateGame(data);
+            updateGame(data);
         });
     }
-  
+
+    function undoMove() {
+        fetch(`/game/play/practice/undo`)
+        .then((response) => response.json())
+        .then((data) => {
+            updateGame(data);
+        });
+    }
+
+    function redoMove() {
+        fetch(`/game/play/practice/redo`)
+            .then((response) => response.json())
+            .then((data) => {
+            updateGame(data);
+       });
+     }
+
+
     cells.forEach((cell) => cell.addEventListener("click", cellClicked));
+    undoBtn.addEventListener("click", undoMove);
+    redoBtn.addEventListener("click", redoMove);
   
     function updateGame(data) {
       const { game_board, status_text, running, comment } = data;
@@ -35,4 +56,3 @@ document.addEventListener("DOMContentLoaded", () => {
       location.reload();
     });
   });
-  
