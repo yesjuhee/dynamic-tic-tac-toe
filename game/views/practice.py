@@ -1,6 +1,7 @@
 from django.http import JsonResponse
 from django.shortcuts import render
-from .game_logic import check_winner, computer_move
+from ..game_logic import check_winner, computer_move
+from .base import change_player
 
 # 게임 상태를 저장하는 전역 변수
 game_board = [""] * 9

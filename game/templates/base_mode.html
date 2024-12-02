@@ -15,12 +15,10 @@
           <div class="cell" cellIndex="{{ forloop.counter0 }}">{{ cell }}</div>
           {% endfor %}
         </div>
-        <h2 id="statusText">{{ status_text }}</h2>
+        {% block extra_content %}{% endblock extra_content %}
         <button id="restartBtn">🔁</button>
         <button id="mainBtn" onclick="location.href='{% url 'index' %}'">🚪</button> 
-        {% block extra_content %}{% endblock extra_content %}
       </div>
-    {% comment %} <script src="{% static 'js/common.js' %}"></script> {% endcomment %}
     {% block script %}{% endblock script %}
   </body>
 </html>

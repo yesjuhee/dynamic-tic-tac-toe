@@ -127,11 +127,10 @@ body {
 
 #restartBtn, #mainBtn {
   display: inline-block;
-  /* width: 3em; */
   width: 45%;
   height: 2em;
   margin: 0.5em 0;
-  font-size: 1.8em;
+  font-size: 1.5em;
   text-align: center;
   background: #ffcc00;
   border: none;
@@ -142,8 +141,8 @@ body {
 }
 #restartBtn:hover,
 #mainBtn:hover {
-  transform: scale(1.1);
-  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
+  transform: scale(1.02);
+  /* box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15); */
 }
 #restartBtn:active,
 #mainBtn:active {
@@ -167,7 +166,40 @@ body {
   }
 
   #restartBtn,
-  #mainBtn {
+  #mainBtn,
+  #undoBtn,
+  #redoBtn {
     font-size: 1.2em;
   }
+}
+
+#status_container{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 1em auto;
+  width: 90%;
+}
+
+#undoBtn, 
+#redoBtn {
+  width: 4em;
+  height: 2em;
+  font-size: 1.2em;
+  background: white;
+  border: solid #f1f1f1;
+  border-radius: 0.3em;
+  cursor: pointer;
+  box-shadow: 0px, 4px, 6px, rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+/* #undoBtn:hover,
+#redoBtn:hover {
+  transform: scale(1.02); 
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
+} */
+#undoBtn:active,
+#redoBtn:active {
+  transform: scale(0.95); 
+  box-shadow: none;
 }

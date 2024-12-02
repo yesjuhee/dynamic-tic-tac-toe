@@ -7,8 +7,14 @@
 
 {% block extra_content %}
 <div id="analytics">
-    <h3>분석 결과</h3>
+    <div id="status_container">
+        <button id="undoBtn">⬅️</button>
+        <h2 id="statusText">{{ status_text }}</h2>
+        <button id="redoBtn">➡️️</button>
+    </div>
+    
     <p>분석 결과입니다.</p>
+    {% comment %} <p>{{ analysText }}</p> {% endcomment %}
 </div>
 {% endblock extra_content %}
 
