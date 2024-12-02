@@ -12,3 +12,4 @@ media
 venv_django
 
 .DS_Store
+.vscode
