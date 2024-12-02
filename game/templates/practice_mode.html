@@ -1,1 +1,17 @@
-<h1>Practice Mode</h1>
+{% extends "base_mode.html" %} 
+{% load static %}
+
+{% block title %}
+<h1>연습 모드</h1>
+{% endblock title %}
+
+{% block extra_content %}
+<div id="analytics">
+    <h3>분석 결과</h3>
+    <p>분석 결과입니다.</p>
+</div>
+{% endblock extra_content %}
+
+{% comment %} {% block script %}
+<script src="{% static 'js/practice_mode.js' %}"></script>
+{% endblock script %} {% endcomment %}

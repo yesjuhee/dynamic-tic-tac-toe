@@ -1,0 +1,30 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dynamic Tic Tac Toe</title>
+    <link rel="stylesheet" href="{% static '/css/main.css' %}" />
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="head">
+        {% block title %}{% endblock title %} 
+      </div>
+      <div id="game_container">
+        <div id="game_board">
+          {% for cell in game_board %}
+          <div class="cell" cellIndex="{{ forloop.counter0 }}">{{ cell }}</div>
+          {% endfor %}
+        </div>
+        <h2 id="statusText">{{ status_text }}</h2>
+        <button id="restartBtn">🔁</button>
+        <button id="mainBtn" onclick="location.href='{% url 'index' %}'">🚪</button> 
+        {% block extra_content %}{% endblock extra_content %}
+      </div>
+    </div>
+    {% comment %} <script src="{% static 'js/common.js' %}"></script> {% endcomment %}
+    {% block script %}{% endblock script %}
+  </body>
+</html>

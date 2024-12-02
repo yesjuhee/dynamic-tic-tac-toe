@@ -1,27 +1,11 @@
+{% extends "base_mode.html" %} 
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dynamic Tic Tac Toe</title>
-    <link rel="stylesheet" href="{% static '/css/main.css' %}" />
-  </head>
-  <body>
-    <div class="wrapper">
-      <div class="head">
-        <h1>DYNAMIC</h1><h1> TIC TAC TOE</h1>
-      </div>
-      <div id="game_container">
-        <div id="game_board">
-          {% for cell in game_board %}
-          <div class="cell" cellIndex="{{ forloop.counter0 }}">{{ cell }}</div>
-          {% endfor %}
-        </div>
-        <h2 id="statusText">{{ status_text }}</h2>
-        <button id="restartBtn">Restart Game</button>
-      </div>
-    </div>
-    <script src="{% static 'js/game.js' %}"></script>
-  </body>
-</html>
+
+{% block title %}
+<h1>1인 모드</h1>
+{% endblock title %}
+
+
+{% block script %}
+<script src="{% static 'js/solo_mode.js' %}"></script>
+{% endblock script %}

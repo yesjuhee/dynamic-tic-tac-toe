@@ -50,16 +50,28 @@ def solo_mode(request):
 
 
 def couple_mode(request):
+    global game_board, current_player, running
+    game_board = [""] * 9
+    current_player = "X"
+    running = True
+    status_text = "X's turn"
     return render(
         request,
         "couple_mode.html",
+        {"game_board": game_board, "status_text": status_text, "running": running},
     )
 
 
 def practice_mode(request):
+    global game_board, current_player, running
+    game_board = [""] * 9
+    current_player = "X"
+    running = True
+    status_text = "Your turn"
     return render(
         request,
         "practice_mode.html",
+        {"game_board": game_board, "status_text": status_text, "running": running},
     )
 
 

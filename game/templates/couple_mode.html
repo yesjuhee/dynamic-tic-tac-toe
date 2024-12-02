@@ -1,1 +1,11 @@
-<h1>Couple Mode</h1>
+{% extends "base_mode.html" %} 
+{% load static %}
+
+{% block title %}
+<h1>2인 모드</h1>
+{% endblock title %}
+
+
+{% comment %} {% block script %}
+<script src="{% static 'js/couple_mode.js' %}"></script>
+{% endblock script %} {% endcomment %}
