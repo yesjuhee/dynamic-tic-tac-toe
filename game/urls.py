@@ -3,8 +3,6 @@ from django.urls import path
 from .views import base, solo, couple, practice
 
 urlpatterns = [
-    # 메인 화면
-    path("", base.index, name="index"),
     # 1인 모드
     path("mode/solo/select", solo.solo_select, name="solo_select"),
     path("mode/solo/<str:user>", solo.solo_mode, name="solo_mode"),
