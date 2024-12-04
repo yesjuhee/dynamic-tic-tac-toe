@@ -1,7 +1,6 @@
 from unittest import result
-#from matplotlib import transforms
-#from sklearn.utils import gen_batches
-
+import random
+from numpy import number
 
 win_conditions = [
     [0, 1, 2],
@@ -15,18 +14,23 @@ win_conditions = [
 ]
 
 transformations = [
-    [0, 1, 2, 3, 4, 5, 6, 7, 8],  # 원본 보드
+    [0, 1, 2, 3, 4, 5, 6, 7, 8],  # 기본 보드
     [6, 3, 0, 7, 4, 1, 8, 5, 2],  # 시계방향 90도 회전
     [8, 7, 6, 5, 4, 3, 2, 1, 0],  # 180도
-    [2, 5, 8, 1, 4, 7, 0, 3, 6],  # 반시계 90도
+    [2, 5, 8, 1, 4, 7, 0, 3, 6],  # 반시계방향 90도
     [2, 1, 0, 5, 4, 3, 8, 7, 6],  # 좌우 대칭
     [6, 7, 8, 3, 4, 5, 0, 1, 2],  # 상하 대칭
-    [0, 3, 6, 1, 4, 7, 2, 5, 8],  # 시계 90도 > 좌우 대칭
-    [8, 5, 2, 7, 4, 1, 6, 3, 0],  # 반시계 90도 > 좌우 대칭
+    [0, 3, 6, 1, 4, 7, 2, 5, 8],  # 시계방향 90도 > 좌우 대칭
+    [8, 5, 2, 7, 4, 1, 6, 3, 0],  # 반시계방향 90도 > 좌우 대칭
 ]
 
-boards = [[""]*9 for _ in range(3**9)]
+# boards = [[""]*9 for _ in range(3**9)] << 모든 보드 구성 만들어놓기?
 dp = [[]] * (3**9)
+
+def initialize_dp():
+    game_board = [""]*9
+    get_dp(game_board, "X")
+    return
 
 def board_index(game_board):
     index = 0
@@ -55,18 +59,25 @@ def check_winner(game_board, current_turn):
             return True
     return False
 
+def get_possible_moves(game_board, current_turn, move_sign):
+    possible_moves = set()
+    for i in range(len(game_board)):
+        if game_board[i] == "":
+            game_board[i] = current_turn
+            if get_dp(game_board, "O" if current_turn == "X" else "X") == move_sign:
+                possible_moves.add(i)
+            game_board[i] = ""
+    return list(possible_moves)
+
 def get_dp(game_board, current_turn):
     index = board_index(game_board)
     
     if dp[index]:
         return dp[index]
     
-    if current_turn == "O":
-        opposite_turn = "X"
-    else:
-        opposite_turn = "O"
+    opposite_turn = "O" if current_turn == "X" else "X"
     
-    if game_board != [""]*9: # 초기 상태 예외 처리
+    if game_board != [""]*9: # 초기상태 예외처리
         if check_winner(game_board, opposite_turn): # 패배
             dp[index] = opposite_turn
             return opposite_turn
@@ -81,46 +92,43 @@ def get_dp(game_board, current_turn):
             possible_results.add(get_dp(game_board, opposite_turn))
             game_board[i] = ""  
     
-    if current_turn == "X":
-        if "X" in possible_results:
-            result = "X"
-        elif "T" in possible_results:
-            result = "T"
-        else:
-            result = "O"
+    if current_turn in possible_results:
+        result = current_turn
+    elif "T" in possible_results:
+        result = "T"
     else:
-        if "O" in possible_results:
-            result = "O"
-        elif "T" in possible_results:
-            result = "T"
-        else:
-            result = "X"
+        result = opposite_turn
     
     for index in transformation_indices(game_board):
         dp[index] = result
     
     return result
     
-        
+start_board = [""]*9
+get_dp(start_board, 'X')
 
-def computer_move(game_board):  # TODO : mini-max 혹은 DP가 들어간 로직으로 수정
-    possible_best_moves = set()
-    current_state = get_dp(game_board)
-    if current_state == "O":
-        for i in range(len(game_board)):
-            if game_board[i] == "":
-                game_board[i] = "O"  # 컴퓨터: O
-                    
-                game_board[i] = ""
-        
+def computer_move(game_board, current_turn):
+    current_state = get_dp(game_board, current_turn)
+    if current_state == current_turn:
+        possible_best_moves = get_possible_moves(game_board, current_turn, current_turn)
+    elif current_state == "T":
+        possible_best_moves = get_possible_moves(game_board, current_turn, "T")
+    game_board[random.choice(possible_best_moves)] = current_turn
     return game_board
 
 '''
 game_board: 문자열 9개 리스트. 현재 게임 상황 표시
 current_turn: 그 다음 차례 ('O' | 'X')
 '''
-#def simulation(game_board, current_turn): 
-#    return simulation_board, comment # gmae_board + 승률 숫자 표시(문자열) / 상황에 대한 분석 코멘트
+def simulation(game_board, current_turn): 
+    simulation_board = game_board
+    number = 15
+    for i in range(len(simulation_board)):
+        if simulation_board[i] == "":
+            simulation_board[i] = number
+            number += 15
+    comment = str(number)
+    return simulation_board, comment # gmae_board + ��????��? ��??��?? ��?����??(?????��??) / ��??��??��?? ��??��??��? ??��?? ??��??��??
 
 
 '''
@@ -190,6 +198,3 @@ def computer_move(game_board):
 
     return game_board
 '''
-game_board = [""]*9
-get_dp(game_board, 'X')
-print(dp)
