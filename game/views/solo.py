@@ -114,7 +114,7 @@ def computer(request):
         return JsonResponse(
             {
                 "game_board": game_board,
-                "status_text": "It's a draw!",
+                "status_text": "비겼습니다!",
                 "running": running,
             }
         )
