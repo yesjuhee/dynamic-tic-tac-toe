@@ -40,11 +40,11 @@ turn: 그 다음 차례 ('O' | 'X')
 
 def simulation(game_board, turn):
     simulation_board = game_board
-    number = 1
+    number = 15
     for i in range(len(simulation_board)):
         if simulation_board[i] == "":
             simulation_board[i] = number
-            number += 1
+            number += 15
     comment = str(number) + "칸이 비어있습니다."
     return (
         simulation_board,

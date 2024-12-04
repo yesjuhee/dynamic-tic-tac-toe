@@ -44,7 +44,27 @@ document.addEventListener("DOMContentLoaded", () => {
       analyses.textContent = comment;
   
       game_board.forEach((value, index) => {
-        cells[index].textContent = value;
+        const cell = cells[index];
+
+        if (Number.isInteger(value)) {
+          cell.textContent = value;
+
+          // Apply color based on the value range
+          if (value <= 20) {
+            cell.style.backgroundColor = "#ff4d4d"; // Light red
+            cell.style.color = "white";
+          } else if (value >= 80) {
+            cell.style.backgroundColor = "#4d79ff"; // Light blue
+            cell.style.color = "white";
+          } else {
+            cell.style.backgroundColor = "#d3d3d3"; // Light gray
+            cell.style.color = "black";
+          }
+        } else {
+          cell.textContent = value;
+          cell.style.backgroundColor = "#31d47d"; // Default green
+          cell.style.color = "white";
+        }
       });
   
       if (!running) {
