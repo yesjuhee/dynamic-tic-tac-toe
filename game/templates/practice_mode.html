@@ -1,0 +1,22 @@
+{% extends "base_mode.html" %} 
+{% load static %}
+
+{% block title %}
+<h1>연습 모드</h1>
+{% endblock title %}
+
+{% block extra_content %}
+<div id="analytics">
+    <div id="status_container">
+        <button id="undoBtn">⬅️</button>
+        <h2 id="statusText">{{ status_text }}</h2>
+        <button id="redoBtn">➡️️</button>
+    </div>
+    
+    <p id="analyses" >{{ analyses }}</p>
+</div>
+{% endblock extra_content %}
+
+{% block script %}
+<script src="{% static 'js/practice_mode.js' %}"></script>
+{% endblock script %}

@@ -1,0 +1,14 @@
+{% extends "base_mode.html" %} 
+{% load static %}
+
+{% block title %}
+<h1>1인 모드</h1>
+{% endblock title %}
+
+{% block extra_content %}
+<h2 id="statusText">{{ status_text }}</h2>
+{% endblock extra_content %}
+
+{% block script %}
+<script src="{% static 'js/solo_mode.js' %}"></script>
+{% endblock script %}
