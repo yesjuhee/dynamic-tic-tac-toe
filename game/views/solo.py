@@ -1,51 +1,42 @@
-from django.http import HttpResponse, JsonResponse
+from django.http import JsonResponse
 from django.shortcuts import render
-from .game_logic import check_winner, computer_move
-
+from ..game_logic import check_winner, computer_move
+from .base import change_player
 
 # 게임 상태를 저장하는 전역 변수
 game_board = [""] * 9
-current_player = "X"  # 유저: X, 컴퓨터: O
+current_player = "X"  # X가 선공
 running = True
-win_conditions = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6],
-]
 
 
-def index(request):
+def solo_select(request):
+    return render(request, "solo_select.html")
+
+
+def solo_mode(request, user):
     global game_board, current_player, running
-    game_board = [""] * 9
-    current_player = "X"
+    game_board = [""] * 9  # 게임 보드 초기화
     running = True
-    status_text = "Your turn"
+    current_player = "X"
+
+    if user == "O":  # 컴퓨터가 선인경우
+        computer(request)
+
+    status_text = "유저의 차례입니다."
+
     return render(
         request,
-        "index.html",
+        "solo_mode.html",
         {"game_board": game_board, "status_text": status_text, "running": running},
     )
 
 
-def user(request, cell_index):
+def user_solo(request, cell_index):
     global game_board, current_player, running
 
     if not running:
         return JsonResponse(
-            {"game_board": game_board, "status_text": "Game Over", "running": running}
-        )
-    if current_player != "X":
-        return JsonResponse(
-            {
-                "game_board": game_board,
-                "status_text": "Computer's turn",
-                "running": running,
-            }
+            {"game_board": game_board, "status_text": "게임 종료", "running": running}
         )
 
     cell_index = int(cell_index)
@@ -54,7 +45,7 @@ def user(request, cell_index):
         return JsonResponse(
             {
                 "game_board": game_board,
-                "status_text": "Invalid move!",
+                "status_text": "잘못된 위치입니다!",
                 "running": running,
             }
         )
@@ -66,7 +57,11 @@ def user(request, cell_index):
     if check_winner(game_board, current_player):
         running = False
         return JsonResponse(
-            {"game_board": game_board, "status_text": "You win!", "running": running}
+            {
+                "game_board": game_board,
+                "status_text": "승리를 축하합니다!",
+                "running": running,
+            }
         )
 
     # 보드가 꽉 찬 경우 확인
@@ -75,13 +70,19 @@ def user(request, cell_index):
         return JsonResponse(
             {
                 "game_board": game_board,
-                "status_text": "It's a draw!",
+                "status_text": "비겼습니다!",
                 "running": running,
             }
         )
 
+    current_player = change_player(current_player)  # 컴퓨터 차례
+
     return JsonResponse(
-        {"game_board": game_board, "status_text": "Computer's turn", "running": running}
+        {
+            "game_board": game_board,
+            "status_text": "컴퓨터 차례입니다.",
+            "running": running,
+        }
     )
 
 
@@ -90,18 +91,21 @@ def computer(request):
 
     if not running:
         return JsonResponse(
-            {"game_board": game_board, "status_text": "Game Over", "running": running}
+            {"game_board": game_board, "status_text": "게임 종료", "running": running}
         )
 
     # 컴퓨터 위치 결정
-    current_player = "O"
-    game_board = computer_move(game_board)
+    game_board = computer_move(game_board, current_player)
 
     # 컴퓨터 승리 여부 확인
     if check_winner(game_board, current_player):
         running = False
         return JsonResponse(
-            {"game_board": game_board, "status_text": "You lose!", "running": running}
+            {
+                "game_board": game_board,
+                "status_text": "패배했습니다...",
+                "running": running,
+            }
         )
 
     # 보드가 꽉 찬 경우 확인
@@ -116,7 +120,11 @@ def computer(request):
         )
 
     # 유저 차레로 바뀜
-    current_player = "X"
+    current_player = change_player(current_player)
     return JsonResponse(
-        {"game_board": game_board, "status_text": "Your turn", "running": running}
+        {
+            "game_board": game_board,
+            "status_text": "유저의 차례입니다.",
+            "running": running,
+        }
     )

@@ -9,10 +9,9 @@
   </head>
   <body>
     <div id="main_container">
-      <h1>Dynamic <br> Tic Tac Toe</h1>
-      <button onclick="location.href='{% url 'solo_select' %}'">1인 모드</button>
-      <button onclick="location.href='{% url 'couple_mode' %}'">2인 모드</button>
-      <button onclick="location.href='{% url 'practice_mode' %}'">연습 모드</button>
+      <h1>1인 모드</h1>
+      <button onclick="location.href='{% url 'solo_mode' 'X' %}'">선공: X</button>
+      <button onclick="location.href='{% url 'solo_mode' 'O' %}'">후공: O</button>
     </div>
   </body>
 </html>

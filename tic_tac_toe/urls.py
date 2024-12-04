@@ -16,8 +16,9 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import include, path
+from game.views import base
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
+    path("", base.index, name="index"),  # 메인화면
     path("game/", include("game.urls")),
 ]
