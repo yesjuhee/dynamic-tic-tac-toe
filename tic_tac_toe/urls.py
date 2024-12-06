@@ -14,11 +14,20 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
+from django.conf import settings
 from django.contrib import admin
-from django.urls import include, path
+from django.urls import include, path, re_path
 from game.views import base
+from django.views.static import serve
 
 urlpatterns = [
     path("", base.index, name="index"),  # 메인화면
     path("game/", include("game.urls")),
 ]
+
+if not settings.DEBUG:
+    urlpatterns += [
+        re_path(
+            r"^static/(?P<path>.*)$", serve, {"document_root": settings.STATIC_ROOT}
+        ),
+    ]
