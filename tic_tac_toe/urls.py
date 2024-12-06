@@ -23,11 +23,5 @@ from django.views.static import serve
 urlpatterns = [
     path("", base.index, name="index"),  # 메인화면
     path("game/", include("game.urls")),
+    re_path(r"^static/(?P<path>.*)$", serve, {"document_root": settings.STATIC_ROOT}),
 ]
-
-if not settings.DEBUG:
-    urlpatterns += [
-        re_path(
-            r"^static/(?P<path>.*)$", serve, {"document_root": settings.STATIC_ROOT}
-        ),
-    ]
