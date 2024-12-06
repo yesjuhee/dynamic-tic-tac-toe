@@ -9,7 +9,11 @@ db.sqlite3-journal
 media
 
 ## venv
-venv_django
+venv
 
+## IDE, OS
 .DS_Store
 .vscode
+
+## static files
+/staticfiles
