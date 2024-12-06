@@ -26,8 +26,7 @@ SECRET_KEY = os.getenv(
 )
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv("DEBUG", "FALSE") == "True"
-# DEBUG = True
+DEBUG = os.getenv("DEBUG", "True") == "True"
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOST", "127.0.0.1,localhost").split(",")
 
 # Application definition
