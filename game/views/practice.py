@@ -84,9 +84,9 @@ def user_practice(request, cell_index):
             }
         )
 
-    simulation_board, analyses = simulation(game_board.copy(), current_player)
-
     current_player = change_player(current_player)
+    
+    simulation_board, analyses = simulation(game_board.copy(), current_player, initial_depth=game_board.count(""))
 
     return JsonResponse(
         {
