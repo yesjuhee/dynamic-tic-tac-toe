@@ -13,7 +13,6 @@ document.addEventListener("DOMContentLoaded", () => {
         fetch(`/game/play/practice/${cellIndex}/`)
         .then((response) => response.json())
         .then((data) => {
-            console.log(data)
             updateGame(data);
         });
     }
@@ -46,7 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
   
       game_board.forEach((value, index) => {
         const cell = cells[index];
-        if (value !== "O" && value !== "X") {
+        if (value !== "O" && value !== "X" && value !== "") {
           value = value * 100; // 100% 기준
           value = Math.floor(value); // 정수 변환
           cell.textContent = value + "%";

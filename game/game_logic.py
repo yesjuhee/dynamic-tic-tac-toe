@@ -137,7 +137,10 @@ def simulation(game_board, current_turn, initial_depth=7, move_weights=(20, 5, 1
 
     initial_index = board_index(game_board)
     if "" not in dp_prob[initial_index]:
-        return (dp_prob[initial_index], "comment")
+        return (
+            dp_prob[initial_index],
+            "comment",
+        )  # 리턴값이 1개라서 런타임 오류가 발생해서 수정함!
 
     simulation_board = game_board.copy()
     opposite_turn = "O" if current_turn == "X" else "X"
