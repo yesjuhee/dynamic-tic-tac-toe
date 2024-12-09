@@ -1,4 +1,5 @@
 import random
+from tracemalloc import start
 import numpy as np
 from numpy import number
 
@@ -110,6 +111,9 @@ start_board = [""]*9
 get_dp(start_board, 'X')
 
 def computer_move(game_board, current_turn):
+    if game_board == start_board:
+        game_board[random.randrange(0,9)] = current_turn
+        return game_board
     current_state = get_dp(game_board, current_turn)
     if current_state == current_turn:
         possible_best_moves = get_possible_moves(game_board, current_turn, current_turn)
@@ -123,10 +127,11 @@ game_board: 문자열 9개 리스트. 현재 게임 상황 표시
 current_turn: 그 다음 차례 ('O' | 'X')
 '''
 def simulation(game_board, current_turn, initial_depth=7, move_weights=(20, 5, 1)): 
+    comment = "comment"
     
     initial_index = board_index(game_board)
     if "" not in dp_prob[initial_index]:
-        return dp_prob[initial_index]
+        return dp_prob[initial_index], comment
     
     simulation_board = game_board.copy()
     opposite_turn = "O" if current_turn == "X" else "X"
@@ -144,12 +149,7 @@ def simulation(game_board, current_turn, initial_depth=7, move_weights=(20, 5, 1
             
         state = get_dp(game_board, turn)
         if depth == 0 or "" not in game_board:
-            if state == current_turn:
-                return 1
-            elif state == opposite_turn:
-                return 0
-            else:
-                return 0.5
+            return 1 if state == current_turn else 0 if state == opposite_turn else 0.5
         
         next_turn = "O" if turn == "X" else "X"
         values = []
@@ -179,7 +179,6 @@ def simulation(game_board, current_turn, initial_depth=7, move_weights=(20, 5, 1
     for index in transformation_indices(game_board):
         dp_prob[index] = simulation_board
     
-    comment = "comment"
     return simulation_board, comment# game_board + ��????��? ��??��?? ��?����??(?????��??) / ��??��??��?? ��??��??��? ??��?? ??��??��??
     
               
