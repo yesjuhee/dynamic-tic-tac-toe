@@ -45,11 +45,11 @@ document.addEventListener("DOMContentLoaded", () => {
   
       game_board.forEach((value, index) => {
         const cell = cells[index];
+        if (value !== "O" && value !== "X" && value !== "") {
+          value = value * 100; // 100% 기준
+          value = Math.floor(value); // 정수 변환
+          cell.textContent = value + "%";
 
-        if (Number.isInteger(value)) {
-          cell.textContent = value;
-
-          // Apply color based on the value range
           if (value <= 20) {
             cell.style.backgroundColor = "#ff4d4d"; // Light red
             cell.style.color = "white";
