@@ -24,6 +24,7 @@ transformations = [
     [8, 5, 2, 7, 4, 1, 6, 3, 0],  # 반시계방향 90도 > 좌우 대칭
 ]
 
+start_board = [""] * 9
 # boards = [[""]*9 for _ in range(3**9)] << 모든 보드 구성 만들어놓기?
 dp_state = [""] * (3**9)
 dp_prob = [[""] * 9] * (3**9)
@@ -85,7 +86,7 @@ def get_dp(game_board, current_turn):
 
     opposite_turn = "O" if current_turn == "X" else "X"
 
-    if game_board != [""] * 9:  # 초기상태 예외처리
+    if game_board != start_board:  # 초기상태 예외처리
         if check_winner(game_board, opposite_turn):  # 패배
             dp_state[index] = opposite_turn
             return opposite_turn
@@ -113,11 +114,13 @@ def get_dp(game_board, current_turn):
     return result
 
 
-start_board = [""] * 9
 get_dp(start_board, "X")
 
 
 def computer_move(game_board, current_turn):
+    if game_board == start_board:
+        game_board[random.randrange(0, 9)] = current_turn
+        return game_board
     current_state = get_dp(game_board, current_turn)
     if current_state == current_turn:
         possible_best_moves = get_possible_moves(game_board, current_turn, current_turn)
@@ -133,48 +136,47 @@ current_turn: 그 다음 차례 ('O' | 'X')
 """
 
 
-def simulation(game_board, current_turn, initial_depth=7, move_weights=(20, 5, 1)):
+def simulation(game_board, current_turn, move_weights=(20, 10, 1)):
+    comment = "comment"
 
     initial_index = board_index(game_board)
     if "" not in dp_prob[initial_index]:
-        return (
-            dp_prob[initial_index],
-            "comment",
-        )  # 리턴값이 1개라서 런타임 오류가 발생해서 수정함!
+        return dp_prob[initial_index], comment
 
     simulation_board = game_board.copy()
     opposite_turn = "O" if current_turn == "X" else "X"
 
-    def simulate(game_board, turn, depth, cell_index):
-        index = board_index(game_board)
-        if "" not in dp_prob[index] and type(dp_prob[index][cell_index]) == float:
-            return dp_prob[index][cell_index]
+    def simulate(prev_game_board, prev_board_index, turn, cell_index):
+        if (
+            "" not in dp_prob[prev_board_index]
+            and type(dp_prob[prev_board_index][cell_index]) == float
+        ):
+            return dp_prob[prev_board_index][cell_index]
 
-        for index in transformation_indices(game_board):
-            dp_prob[index] = game_board.copy()
+        prev_game_board[cell_index] = turn
+        if check_winner(prev_game_board, turn):
+            return 1
+        if "" not in prev_game_board:
+            return 0.5
 
-        if check_winner(game_board, turn):
-            return 1 if turn == current_turn else 0
-
-        state = get_dp(game_board, turn)
-        if depth == 0 or "" not in game_board:
-            if state == current_turn:
-                return 1
-            elif state == opposite_turn:
-                return 0
-            else:
-                return 0.5
+        cur_game_board = prev_game_board.copy()
+        prev_game_board[cell_index] = ""
+        cur_board_index = board_index(cur_game_board)
+        dp_prob[cur_board_index] = cur_game_board.copy()
 
         next_turn = "O" if turn == "X" else "X"
         values = []
-        for i, cell in enumerate(game_board):
+        for i, cell in enumerate(cur_game_board):
             if cell == "":
-                game_board[i] = turn
-                expected_value = simulate(game_board, next_turn, depth - 1, i)
+                expected_value = simulate(cur_game_board, cur_board_index, next_turn, i)
                 values.append(expected_value)
-                for j, index in enumerate(transformation_indices(game_board)):
-                    dp_prob[index][transformations[j][i]] = expected_value
-                game_board[i] = ""
+                dp_prob[cur_board_index][i] = expected_value
+
+        for transform in transformations:
+            transformed_index = board_index([cur_game_board[i] for i in transform])
+            dp_prob[transformed_index] = [
+                dp_prob[cur_board_index][i] for i in transform
+            ]
 
         weights = [
             (
@@ -186,103 +188,23 @@ def simulation(game_board, current_turn, initial_depth=7, move_weights=(20, 5, 1
         ]
 
         weights_sum = sum(weights)
-        return (
-            0
-            if 0 in values and depth == initial_depth
-            else sum(
+        return round(
+            1
+            - sum(
                 value * weight / weights_sum for value, weight in zip(values, weights)
-            )
+            ),
+            2,
         )
 
     for i in range(len(game_board)):
         if game_board[i] == "":
-            game_board[i] = current_turn
-            simulation_board[i] = round(
-                simulate(game_board, opposite_turn, initial_depth, i), 2
-            )
-            game_board[i] = ""
+            simulation_board[i] = simulate(game_board, initial_index, current_turn, i)
 
-    for index in transformation_indices(game_board):
-        dp_prob[index] = simulation_board
+    for transform in transformations:
+        transformed_index = board_index([game_board[i] for i in transform])
+        dp_prob[transformed_index] = [simulation_board[i] for i in transform]
 
-    comment = "comment"
     return (
         simulation_board,
         comment,
     )  # game_board + ��????��? ��??��?? ��?����??(?????��??) / ��??��??��?? ��??��??��? ??��?? ??��??��??
-
-    # board_size = len(game_board)
-    #  # 승/무/패 가중치
-    # for i in range(board_size):
-    #     move_value = 0
-    #     if game_board[i] == "":
-    #         game_board[i] = current_turn
-    #         first_value_board = np.zeros((board_size, 2)).tolist()
-    #         first_z`weight_sum = 0
-    #         for j in range(board_size): # 상대의 대응수
-    #             if game_board[j] == "":
-    #                 game_board[j] = opposite_turn
-    #                 if get_dp(game_board, current_turn) == current_turn:
-    #                     first_value_board[j][0] = move_weights[0]
-    #                 elif get_dp(game_board, current_turn) == opposite_turn:
-    #                     first_value_board[j][0] = move_weights[2]
-    #                 else:
-    #                     first_value_board[j][0] = move_weights[1]
-    #                 first_weight_sum += first_value_board[j][0]
-
-    #                 second_value_board = np.zeros((board_size, 2)).tolist()
-    #                 second_weight_sum = 0
-    #                 for k in range(board_size): # 대응수에 대한 그 다음 수
-    #                     if game_board[k] == "":
-    #                         game_board[k] = current_turn
-    #                         if get_dp(game_board, opposite_turn) == opposite_turn:
-    #                             second_value_board[k][0] = move_weights[0]
-    #                         elif get_dp(game_board, opposite_turn) == current_turn:
-    #                             second_value_board[k][0] = move_weights[2]
-    #                         else:
-    #                             second_value_board[k][0] = move_weights[1]
-    #                         second_weight_sum += second_value_board[k][0]
-
-    #                         third_value_board = np.zeros((board_size, 2)).tolist()
-    #                         third_weight_sum = 0
-    #                         for l in range(board_size):
-    #                             if game_board[l] == "":
-    #                                 game_board[l] = opposite_turn
-    #                                 if get_dp(game_board, current_turn) == current_turn:
-    #                                     third_value_board[l] = [move_weights[0], 1]
-    #                                 elif get_dp(game_board, current_turn) == opposite_turn:
-    #                                     third_value_board[l] = [move_weights[2], 0]
-    #                                 else:
-    #                                     third_value_board[l] = [move_weights[1], 0.5]
-    #                                 third_weight_sum += third_value_board[l][0]
-    #                                 game_board[l] = ""
-    #                         if third_weight_sum:
-    #                             for l in range(board_size):
-    #                                 second_value_board[l][1] += (third_value_board[l][0] / third_weight_sum) * third_value_board[l][1]
-    #                         else:
-    #                             for l in range(board_size):
-    #                                 if second_value_board[l][1] == move_weights[0]:
-    #                                     second_value_board[l][1] = 1
-    #                                 elif second_value_board[l][1] == move_weights[1]:
-    #                                     second_value_board[l][1] = 0.5
-    #                                 else:
-    #                                     second_value_board[l][1] = 0
-    #                         game_board[k] = ""
-    #                 if second_weight_sum:
-    #                     for k in range(board_size):
-    #                         first_value_board[j][1] += (second_value_board[k][0] / second_weight_sum) * second_value_board[k][1]
-    #                 else:
-    #                     for k in range(board_size):
-    #                         if first_value_board[k][1] == move_weights[0]:
-    #                             first_value_board[k][1] = 1
-    #                         elif first_value_board[k][1] == move_weights[1]:
-    #                             first_value_board[k][1] = 0.5
-    #                         else:
-    #                             first_value_board[k][1] = 0
-    #                 game_board[j] = ""
-    #         if first_weight_sum:
-    #             for j in range(board_size):
-    #                 move_value += (first_value_board[j][0] / first_weight_sum) * first_value_board[j][1]
-    #         game_board[i] = ""
-
-    #         simulation_board[i] = round(move_value, 2)
