@@ -1,5 +1,4 @@
 import random
-from turtle import position
 import numpy as np
 from numpy import number
 
@@ -136,7 +135,7 @@ def computer_move(game_board, current_turn):
     current_state = get_dp(game_board, current_turn)
     win_moves = get_instant_wins(game_board, current_turn)
     if win_moves:
-        possible_best_moves = win_moves
+        possible_best_moves = win_moves(game_board, current_turn)
     elif current_state == current_turn:
         possible_best_moves = get_possible_moves(game_board, current_turn, current_turn)
     elif current_state == "T":
@@ -223,148 +222,3 @@ def simulation(game_board, current_turn, move_weights=(20, 10, 1)):
         simulation_board,
         comment,
     )  # game_board + ��????��? ��??��?? ��?����??(?????��??) / ��??��??��?? ��??��??��? ??��?? ??��??��??
-
-    # board_size = len(game_board)
-    #  # 승/무/패 가중치
-    # for i in range(board_size):
-    #     move_value = 0
-    #     if game_board[i] == "":
-    #         game_board[i] = current_turn
-    #         first_value_board = np.zeros((board_size, 2)).tolist()
-    #         first_z`weight_sum = 0
-    #         for j in range(board_size): # 상대의 대응수
-    #             if game_board[j] == "":
-    #                 game_board[j] = opposite_turn
-    #                 if get_dp(game_board, current_turn) == current_turn:
-    #                     first_value_board[j][0] = move_weights[0]
-    #                 elif get_dp(game_board, current_turn) == opposite_turn:
-    #                     first_value_board[j][0] = move_weights[2]
-    #                 else:
-    #                     first_value_board[j][0] = move_weights[1]
-    #                 first_weight_sum += first_value_board[j][0]
-
-    #                 second_value_board = np.zeros((board_size, 2)).tolist()
-    #                 second_weight_sum = 0
-    #                 for k in range(board_size): # 대응수에 대한 그 다음 수
-    #                     if game_board[k] == "":
-    #                         game_board[k] = current_turn
-    #                         if get_dp(game_board, opposite_turn) == opposite_turn:
-    #                             second_value_board[k][0] = move_weights[0]
-    #                         elif get_dp(game_board, opposite_turn) == current_turn:
-    #                             second_value_board[k][0] = move_weights[2]
-    #                         else:
-    #                             second_value_board[k][0] = move_weights[1]
-    #                         second_weight_sum += second_value_board[k][0]
-
-    #                         third_value_board = np.zeros((board_size, 2)).tolist()
-    #                         third_weight_sum = 0
-    #                         for l in range(board_size):
-    #                             if game_board[l] == "":
-    #                                 game_board[l] = opposite_turn
-    #                                 if get_dp(game_board, current_turn) == current_turn:
-    #                                     third_value_board[l] = [move_weights[0], 1]
-    #                                 elif get_dp(game_board, current_turn) == opposite_turn:
-    #                                     third_value_board[l] = [move_weights[2], 0]
-    #                                 else:
-    #                                     third_value_board[l] = [move_weights[1], 0.5]
-    #                                 third_weight_sum += third_value_board[l][0]
-    #                                 game_board[l] = ""
-    #                         if third_weight_sum:
-    #                             for l in range(board_size):
-    #                                 second_value_board[l][1] += (third_value_board[l][0] / third_weight_sum) * third_value_board[l][1]
-    #                         else:
-    #                             for l in range(board_size):
-    #                                 if second_value_board[l][1] == move_weights[0]:
-    #                                     second_value_board[l][1] = 1
-    #                                 elif second_value_board[l][1] == move_weights[1]:
-    #                                     second_value_board[l][1] = 0.5
-    #                                 else:
-    #                                     second_value_board[l][1] = 0
-    #                         game_board[k] = ""
-    #                 if second_weight_sum:
-    #                     for k in range(board_size):
-    #                         first_value_board[j][1] += (second_value_board[k][0] / second_weight_sum) * second_value_board[k][1]
-    #                 else:
-    #                     for k in range(board_size):
-    #                         if first_value_board[k][1] == move_weights[0]:
-    #                             first_value_board[k][1] = 1
-    #                         elif first_value_board[k][1] == move_weights[1]:
-    #                             first_value_board[k][1] = 0.5
-    #                         else:
-    #                             first_value_board[k][1] = 0
-    #                 game_board[j] = ""
-    #         if first_weight_sum:
-    #             for j in range(board_size):
-    #                 move_value += (first_value_board[j][0] / first_weight_sum) * first_value_board[j][1]
-    #         game_board[i] = ""
-
-    #         simulation_board[i] = round(move_value, 2)
-
-
-'''
-def minimax(game_board, depth, is_maximizing):
-    """
-    Minimax algorithm to calculate the optimal move.
-    :param game_board: Current state of the game board.
-    :param depth: Current depth of the recursion.
-    :param is_maximizing: Boolean indicating whether it's the maximizing player's current_turn.
-    :return: The best score for the current player.
-    """
-    # Check if the game has reached a terminal state
-    if check_winner(game_board, "O"):
-        return 10 - depth  # Favor faster wins
-    if check_winner(game_board, "X"):
-        return depth - 10  # Favor slower losses
-    if "" not in game_board:  # Draw
-        return 0
-
-    if is_maximizing:
-        best_score = float("-inf")
-        for i in range(len(game_board)):
-            if game_board[i] == "":
-                # Try a move
-                game_board[i] = "O"
-                score = minimax(game_board, depth + 1, False)
-                # Undo the move
-                game_board[i] = ""
-                best_score = max(best_score, score)
-        return best_score
-    else:
-        best_score = float("inf")
-        for i in range(len(game_board)):
-            if game_board[i] == "":
-                # Try a move
-                game_board[i] = "X"
-                score = minimax(game_board, depth + 1, True)
-                # Undo the move
-                game_board[i] = ""
-                best_score = min(best_score, score)
-        return best_score
-
-
-def computer_move(game_board):
-    """
-    Use the Minimax algorithm to determine the computer's best move.
-    :param game_board: Current state of the game board.
-    :return: Updated game board with the computer's move.
-    """
-    best_score = float("-inf")
-    best_move = -1
-
-    for i in range(len(game_board)):
-        if game_board[i] == "":
-            # Try a move
-            game_board[i] = "O"
-            score = minimax(game_board, 0, False)
-            # Undo the move
-            game_board[i] = ""
-            if score > best_score:
-                best_score = score
-                best_move = i
-
-    # Make the best move
-    if best_move != -1:
-        game_board[best_move] = "O"
-
-    return game_board
-'''
