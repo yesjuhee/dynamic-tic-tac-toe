@@ -1,7 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
     const cells = document.querySelectorAll(".cell");
     const statusText = document.querySelector("#statusText");
-    const analyses = document.querySelector("#analyses");
     const restartBtn = document.querySelector("#restartBtn");
     const undoBtn = document.querySelector("#undoBtn");
     const redoBtn = document.querySelector("#redoBtn");
@@ -41,7 +40,6 @@ document.addEventListener("DOMContentLoaded", () => {
     function updateGame(data) {
       const { game_board, status_text, running, comment } = data;
       statusText.textContent = status_text;
-      analyses.textContent = comment;
   
       game_board.forEach((value, index) => {
         const cell = cells[index];
