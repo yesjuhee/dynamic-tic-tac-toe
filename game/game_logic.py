@@ -1,4 +1,5 @@
 import random
+from turtle import position
 import numpy as np
 from numpy import number
 
@@ -72,6 +73,16 @@ def get_possible_moves(game_board, current_turn, move_sign):
             game_board[i] = ""
     return list(possible_moves)
 
+def get_instant_wins(game_board, current_turn):
+    win_moves = set()
+    for i, cell in enumerate(game_board):
+        if cell == "":
+            game_board[i] = current_turn
+            if check_winner(game_board, current_turn):
+                win_moves.add(i)
+            game_board[i] = ""
+    return list(win_moves)
+
 def get_dp(game_board, current_turn):
     index = board_index(game_board)
     
@@ -114,7 +125,10 @@ def computer_move(game_board, current_turn):
         game_board[random.randrange(0,9)] = current_turn
         return game_board
     current_state = get_dp(game_board, current_turn)
-    if current_state == current_turn:
+    win_moves = get_instant_wins
+    if win_moves:
+        possible_best_moves = win_moves
+    elif current_state == current_turn:
         possible_best_moves = get_possible_moves(game_board, current_turn, current_turn)
     elif current_state == "T":
         possible_best_moves = get_possible_moves(game_board, current_turn, "T")
