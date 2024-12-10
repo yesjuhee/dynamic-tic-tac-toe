@@ -135,7 +135,7 @@ def computer_move(game_board, current_turn):
     current_state = get_dp(game_board, current_turn)
     win_moves = get_instant_wins(game_board, current_turn)
     if win_moves:
-        possible_best_moves = win_moves(game_board, current_turn)
+        possible_best_moves = win_moves
     elif current_state == current_turn:
         possible_best_moves = get_possible_moves(game_board, current_turn, current_turn)
     elif current_state == "T":
