@@ -134,12 +134,19 @@ def computer_move(game_board, current_turn):
         return game_board
     current_state = get_dp(game_board, current_turn)
     win_moves = get_instant_wins(game_board, current_turn)
+    opposite_turn = "O" if current_turn == "X" else "X"
+    defend_moves = get_instant_wins(game_board, opposite_turn)
     if win_moves:
         possible_best_moves = win_moves
+    elif defend_moves:
+        possible_best_moves = defend_moves
     elif current_state == current_turn:
         possible_best_moves = get_possible_moves(game_board, current_turn, current_turn)
     elif current_state == "T":
         possible_best_moves = get_possible_moves(game_board, current_turn, "T")
+    else:
+        possible_best_moves = get_possible_moves(game_board, current_turn, opposite_turn)
+       
     game_board[random.choice(possible_best_moves)] = current_turn
     return game_board
 
